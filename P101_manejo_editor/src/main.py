@@ -25,9 +25,15 @@ def initialize_folder(folder):
         os.makedirs(folder)
 
 
+
 def delete_folder(folder):
     if os.path.exists(folder):
-        shutil.rmtree(folder)
+        shutil.rmtree(folder, onexc=handle_remove_readonly)
+
+def handle_remove_readonly(func, path, exc):
+    os.chmod(path, 0o777)
+    func(path)
+
 
 
 # Genera copias de los archivos en raw/
